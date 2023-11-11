@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[4]:
 
 
 seed=198
@@ -13,7 +13,7 @@ seed=198
 
 
 
-# In[7]:
+# In[46]:
 
 
 # importing required libraries
@@ -51,7 +51,7 @@ warnings.simplefilter("ignore")
 print(torch.__version__)
 
 
-# In[8]:
+# In[47]:
 
 
 # Check if CUDA is available
@@ -71,7 +71,7 @@ tensor = torch.randn(3, 4).to(device)
 print("Tensor device:", tensor.device)
 
 
-# In[49]:
+# In[48]:
 
 
 def reset_random_seeds(seed):
@@ -82,14 +82,14 @@ def reset_random_seeds(seed):
     random.seed(seed)
 
 
-# In[50]:
+# In[49]:
 
 
 # pickle_file_path = '/media/terminator/Data/NatureData/Auto Ten Minutes.pkl'
 pickle_file_path = '/media/terminator/NatureData/Auto Ten Minutes.pkl'
 
 
-# In[51]:
+# In[50]:
 
 
 # Load data from the pickle file
@@ -103,25 +103,25 @@ X_test = loaded_data_dict["X_test"]
 y_test = loaded_data_dict["y_test"]
 
 
-# In[52]:
+# In[51]:
 
 
 X_train.shape,y_train.shape
 
 
-# In[53]:
+# In[52]:
 
 
 features=13
 
 
-# In[54]:
+# In[53]:
 
 
 X_train
 
 
-# In[55]:
+# In[54]:
 
 
 def reconstructData(packets):
@@ -137,7 +137,7 @@ def reconstructData(packets):
     return reconstructed_data
 
 
-# In[56]:
+# In[55]:
 
 
 def norm(out):
@@ -153,7 +153,7 @@ def norm(out):
     return out
 
 
-# In[57]:
+# In[56]:
 
 
 Valid,Test = X_test[:100000],X_test[100000:]
@@ -210,19 +210,19 @@ test_dataset = torch.utils.data.TensorDataset(Test.float(), Test_label.float(),t
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
 
-# In[58]:
+# In[57]:
 
 
 np.where(valid_mov[:,2]==1)[0].shape
 
 
-# In[59]:
+# In[58]:
 
 
 X_train.shape, y_train.shape
 
 
-# In[60]:
+# In[59]:
 
 
 import torch
@@ -268,7 +268,7 @@ class PositionalEmbedding(nn.Module):
         return x + angles
 
 
-# In[61]:
+# In[60]:
 
 
 # Create a test input tensor
@@ -288,7 +288,7 @@ output = pos_embedding(test_input)
 print(output.shape)
 
 
-# In[62]:
+# In[61]:
 
 
 plt.pcolormesh(output[0].numpy().T, cmap='RdBu')
@@ -298,7 +298,7 @@ plt.colorbar()
 plt.show()
 
 
-# In[63]:
+# In[62]:
 
 
 class CustomMSELoss(nn.Module):
@@ -342,7 +342,7 @@ class CustomBCELoss(nn.Module):
         return loss, accuracy
 
 
-# In[64]:
+# In[63]:
 
 
 class MultiHeadAttention(nn.Module):
@@ -390,7 +390,7 @@ class MultiHeadAttention(nn.Module):
         return output
 
 
-# In[65]:
+# In[64]:
 
 
 class TransformerBlock(nn.Module):
@@ -437,7 +437,7 @@ class TransformerBlock(nn.Module):
         return norm2_out
 
 
-# In[66]:
+# In[65]:
 
 
 class TransformerEncoder(nn.Module):
@@ -462,7 +462,7 @@ class TransformerEncoder(nn.Module):
     
 
 
-# In[67]:
+# In[66]:
 
 
 class LSTMModel(nn.Module):
@@ -499,7 +499,7 @@ class LSTMModel(nn.Module):
         return out
 
 
-# In[68]:
+# In[67]:
 
 
 class LSTMModelE(nn.Module):
@@ -536,7 +536,7 @@ class LSTMModelE(nn.Module):
         return out
 
 
-# In[69]:
+# In[68]:
 
 
 
@@ -598,7 +598,7 @@ class Classifier(nn.Module):
 
 
 
-# In[70]:
+# In[69]:
 
 
 class HierarchicalTransformerEncoder(nn.Module):
@@ -660,7 +660,7 @@ class HierarchicalTransformerEncoder(nn.Module):
     
 
 
-# In[71]:
+# In[70]:
 
 
 import torch.nn as nn
@@ -692,7 +692,7 @@ class AttentionUpsampling(nn.Module):
 
 
 
-# In[72]:
+# In[71]:
 
 
 import torch.nn as nn
@@ -755,7 +755,7 @@ class HierarchicalTransformerDecoder(nn.Module):
         return out
 
 
-# In[73]:
+# In[72]:
 
 
 train = 0
@@ -1033,13 +1033,13 @@ Decoder.load_state_dict(torch.load('DecoderAuto1107.pt'))
 Cf.load_state_dict(torch.load('CfAuto1107.pt'))
 
 
-# In[74]:
+# In[73]:
 
 
 print('Done')
 
 
-# In[75]:
+# In[74]:
 
 
 avg = 'weighted'
@@ -1060,7 +1060,7 @@ Decoder = HierarchicalTransformerDecoder(seq_length, src_vocab_size, embed_dim, 
 Cf = Classifier(24, vocab_size=latent_dim, embed_dim=128, num_layers=1, expansion_factor=2, n_heads=2, latent_dim=latent_dim).to(device)
 
 
-# In[76]:
+# In[75]:
 
 
 Encoder.load_state_dict(torch.load('EncoderAuto1107.pt'))
@@ -1230,39 +1230,49 @@ print()
 print()
 
 
-# In[77]:
+# In[244]:
 
 
-epoch=100
+epoch=20
 
 
-# In[ ]:
+# In[245]:
 
 
 bs = 1024
 bsl = bs*20
-
-for k in range(2,5):
+All_Data = []
+for k in range(0,5):
     idx = k
     m=0
-    vsam = []
-    vsal = []
-    vsamm = []
-    vsall = []
-    vsammr = []
-    vsallr = []
-    vsamr = []
-    vsalr = []
+    mean0_value = []
+    mean1_value = []
+    arr0_zero = []
+    arr0_one = []
+    arr0_two = []
+    arr1_zero = []
+    arr1_one = []
+    arr1_two = []
+    mean1r_value = []
+    mean2r_value = []
+    arr1r_zero = []
+    arr1r_one = []
+    arr1r_two = []
+    arr2r_zero = []
+    arr2r_one = []
+    arr2r_two = []
+
     for j in range(epoch):
         print(j, end='')
-        m= m+0.1
+        m= m+0.05
         Test = X_train[np.where(train_mov[:,0]==1)[0]][:bsl]
         TestLabel = train_mov[np.where(train_mov[:,0]==1)[0]][:bsl]
         mean = Test[:,:, idx].mean()
         std = Test[:,:, idx].std()
 
-        R = mean + m + std * torch.randn(1)
-        Test[:,:, idx] = Test[:,:, idx] + R
+        R =  m + std * torch.randn(Test.shape)
+        Test[:,:, idx] = Test[:,:, idx] + R[:,:,idx]
+        means = Test[:,:, idx].mean().numpy().item()
 
         test_dataset = torch.utils.data.TensorDataset(Test.float(), TestLabel.float())
         test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=bs, shuffle=False)
@@ -1291,17 +1301,20 @@ for k in range(2,5):
         pre = pre.cpu().detach().numpy()
         zero = np.where(pre==0)[0].shape[0]
         one  = np.where(pre==1)[0].shape[0]
-        two  = np.where(pre==0)[0].shape[0]
-        vsamm.append(m)
-        vsall.append(one)
-
+        two  = np.where(pre==2)[0].shape[0]
+        mean0_value.append(means)
+        arr0_zero.append(zero)
+        arr0_one.append(one)
+        arr0_two.append(two)
+        
         Test = X_train[np.where(train_mov[:,1]==1)[0]][:bsl]
         TestLabel = train_mov[np.where(train_mov[:,1]==1)[0]][:bsl]
         mean = Test[:,:, idx].mean()
         std = Test[:,:, idx].std()
 
-        R = mean + m + std * torch.randn(1)
-        Test[:,:, idx] = Test[:,:, idx] - R
+        R =  m + std * torch.randn(Test.shape)
+        Test[:,:, idx] = Test[:,:, idx] + R[:,:,idx]
+        means = Test[:,:, idx].mean().numpy().item()
 
         test_dataset = torch.utils.data.TensorDataset(Test.float(), TestLabel.float())
         test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=bs, shuffle=False)
@@ -1329,18 +1342,23 @@ for k in range(2,5):
         lb = lb.cpu().detach().numpy()
         pre = pre.cpu().detach().numpy()
         zero = np.where(pre==0)[0].shape[0]
-        one = np.where(pre==1)[0].shape[0]
-        two = np.where(pre==0)[0].shape[0]
-        vsammr.append(m)
-        vsallr.append(zero)
-
+        one  = np.where(pre==1)[0].shape[0]
+        two  = np.where(pre==2)[0].shape[0]
+        mean1_value.append(means)
+        arr1_zero.append(zero)
+        arr1_one.append(one)
+        arr1_two.append(two)
+        
+        #Reverse
+        
         Test = X_train[np.where(train_mov[:,1]==1)[0]][:bsl]
         TestLabel = train_mov[np.where(train_mov[:,1]==1)[0]][:bsl]
         mean = Test[:,:, idx].mean()
         std = Test[:,:, idx].std()
 
-        R = mean+m + std * torch.randn(1)
-        Test[:,:, idx] = Test[:,:, idx] + R
+        R =  m + std * torch.randn(Test.shape)
+        Test[:,:, idx] = Test[:,:, idx] - R[:,:,idx]
+        means = Test[:,:, idx].mean().numpy().item()
 
         test_dataset = torch.utils.data.TensorDataset(Test.float(), TestLabel.float())
         test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=bs, shuffle=False)
@@ -1368,18 +1386,21 @@ for k in range(2,5):
         lb = lb.cpu().detach().numpy()
         pre = pre.cpu().detach().numpy()
         zero = np.where(pre==0)[0].shape[0]
-        one = np.where(pre==1)[0].shape[0]
-        two = np.where(pre==0)[0].shape[0]
-        vsam.append(m)
-        vsal.append(two)
-
+        one  = np.where(pre==1)[0].shape[0]
+        two  = np.where(pre==2)[0].shape[0]
+        mean1r_value.append(means)
+        arr1r_zero.append(zero)
+        arr1r_one.append(one)
+        arr1r_two.append(two)
+        
         Test = X_train[np.where(train_mov[:,2]==1)[0]][:bsl]
         TestLabel = train_mov[np.where(train_mov[:,2]==1)[0]][:bsl]
         mean = Test[:,:, idx].mean()
         std = Test[:,:, idx].std()
 
-        R = mean+m + std * torch.randn(1)
-        Test[:,:, idx] = Test[:,:, idx]-R
+        R =  m + std * torch.randn(Test.shape)
+        Test[:,:, idx] = Test[:,:, idx] - R[:,:,idx]
+        means = Test[:,:, idx].mean().numpy().item()
 
         test_dataset = torch.utils.data.TensorDataset(Test.float(), TestLabel.float())
         test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=bs, shuffle=False)
@@ -1407,21 +1428,115 @@ for k in range(2,5):
         lb = lb.cpu().detach().numpy()
         pre = pre.cpu().detach().numpy()
         zero = np.where(pre==0)[0].shape[0]
-        one = np.where(pre==1)[0].shape[0]
-        two = np.where(pre==0)[0].shape[0]
-        vsamr.append(m)
-        vsalr.append(one)
+        one  = np.where(pre==1)[0].shape[0]
+        two  = np.where(pre==2)[0].shape[0]
+        mean2r_value.append(means)
+        arr2r_zero.append(zero)
+        arr2r_one.append(one)
+        arr2r_two.append(two)
+        
+   
 
     print('done')
     print(idx)
-    plt.plot(vsam,vsal)
-    plt.plot(vsamr,vsalr)
+    plt.figure(figsize=(15, 2))
+    plt.plot(mean0_value,arr0_zero,label='Z0>1')
+    plt.plot(mean0_value,arr0_one,label='O0>1')
+    plt.plot(mean0_value,arr0_two,label='T0>1')
+    plt.legend()
     plt.show()
-    plt.plot(vsamm,vsall)
-    plt.plot(vsammr,vsallr)
+    plt.figure(figsize=(15, 2))
+    plt.plot(mean1_value,arr1_zero,label='Z1>2')
+    plt.plot(mean1_value,arr1_one,label='O1>2')
+    plt.plot(mean1_value,arr1_two,label='T1>2')
+    plt.legend()
     plt.show()
-    for i in range(epoch):
-        print(round(vsam[i],1),vsal[i], round(vsamr[i],1),vsalr[i])
+    plt.figure(figsize=(15, 2))
+    plt.plot(mean1r_value,arr1r_zero,label='Z1>0')
+    plt.plot(mean1r_value,arr1r_one,label='O1>0')
+    plt.plot(mean1r_value,arr1r_two,label='T1>0')
+    plt.legend()
+    plt.show()
+    plt.figure(figsize=(15, 2))
+    plt.plot(mean2r_value,arr2r_zero,label='Z2>1')
+    plt.plot(mean2r_value,arr2r_one,label='O2>1')
+    plt.plot(mean2r_value,arr2r_two,label='T2>1')
+    plt.legend()
+    plt.show()
+    
+
+    # Transpose the columns to rows
+    rows = list(zip(mean0_value, arr0_zero, arr0_one, arr0_two,mean1_value, arr1_zero, arr1_one, arr1_two,mean1r_value, arr1r_zero, arr1r_one, arr1r_two,mean2r_value, arr2r_zero, arr2r_one, arr2r_two))  # Zip all the columns
+
+    # Find the maximum length of each column
+    column_lengths = [4 for column in range(16)]
+
+    header = ["M", "Z", "O", "T","M", "Z", "O", "T","M", "Z", "O", "T","M", "Z", "O", "T"]
+
+    # Repeat each value four times
+    print(" | ".join(f"{header[i]:<{column_lengths[i]}}" for i in range(len(rows[0]))))
+
+    # Display the table separator
+    separator = "+".join("-" * 6 for length in column_lengths)
+    print(separator)
+
+    # Display the table rows
+    for row in rows:
+        print(" | ".join(f"{str(round(value, 2)):<{column_lengths[i]}}" for i, value in enumerate(row)))
+
+    
+    All_Data.append([mean0_value, arr0_zero, arr0_one, arr0_two,mean1_value, arr1_zero, arr1_one, arr1_two,mean1r_value, arr1r_zero, arr1r_one, arr1r_two,mean2r_value, arr2r_zero, arr2r_one, arr2r_two])
+
+
+# In[243]:
+
+
+pickle_file_path = 'all_data.pkl'
+
+# Open the file in binary write mode
+with open(pickle_file_path, 'wb') as file:
+    # Dump the list into the file using pickle.dump
+    pickle.dump(All_Data, file)
+
+print(f"List saved to {pickle_file_path}")
+
+
+# In[ ]:
+
+
+pickle_file_path = 'all_data.pkl'
+
+# Open the file in binary read mode
+with open(pickle_file_path, 'rb') as file:
+    # Load the data from the file using pickle.load
+    loaded_data = pickle.load(file)
+
+print("Loaded data:")
+
+
+# In[229]:
+
+
+
+
+# Transpose the columns to rows
+rows = list(zip(mean0_value, arr0_zero, arr0_one, arr0_two,mean1_value, arr1_zero, arr1_one, arr1_two,mean1r_value, arr1r_zero, arr1r_one, arr1r_two,mean2r_value, arr2r_zero, arr2r_one, arr2r_two))  # Zip all the columns
+
+# Find the maximum length of each column
+column_lengths = [4 for column in range(16)]
+
+header = ["M", "Z", "O", "T","M", "Z", "O", "T","M", "Z", "O", "T","M", "Z", "O", "T"]
+
+# Repeat each value four times
+print(" | ".join(f"{header[i]:<{column_lengths[i]}}" for i in range(len(rows[0]))))
+
+# Display the table separator
+separator = "+".join("-" * 6 for length in column_lengths)
+print(separator)
+
+# Display the table rows
+for row in rows:
+    print(" | ".join(f"{str(round(value, 2)):<{column_lengths[i]}}" for i, value in enumerate(row)))
 
 
 # In[ ]:
